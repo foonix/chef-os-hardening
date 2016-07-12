@@ -19,9 +19,9 @@
 
 # Only enable IP traffic forwarding, if required.
 default['sysctl']['params']['net']['ipv4']['ip_forward'] =
-  node['network']['forwarding'] ? 1 : 0
+  node['os-hardening']['network']['forwarding'] ? 1 : 0
 default['sysctl']['params']['net']['ipv6']['conf']['all']['forwarding'] =
-  (node['network']['ipv6']['enable'] && node['network']['forwarding']) ? 1 : 0
+  (node['os-hardening']['network']['ipv6']['enable'] && node['os-hardening']['network']['forwarding']) ? 1 : 0
 
 # Enable RFC-recommended source validation feature. It should not be used for
 # routers on complex networks, but is helpful for end hosts and routers serving
@@ -46,7 +46,7 @@ default['sysctl']['params']['net']['ipv4']['icmp_ratemask'] = 88089
 
 # Disable or Enable IPv6 as it is needed.
 default['sysctl']['params']['net']['ipv6']['conf']['all']['disable_ipv6'] =
-    node['network']['ipv6']['enable'] ? 0 : 1
+    node['os-hardening']['network']['ipv6']['enable'] ? 0 : 1
 
 # Protect against wrapping sequence numbers at gigabit speeds:
 default['sysctl']['params']['net']['ipv4']['tcp_timestamps'] = 0
@@ -76,7 +76,7 @@ default['sysctl']['params']['net']['ipv4']['tcp_timestamps'] = 0
 #           announce.
 #
 default['sysctl']['params']['net']['ipv4']['conf']['all']['arp_ignore'] =
-    node['network']['arp']['restricted'] ? 1 : 0
+    node['os-hardening']['network']['arp']['restricted'] ? 1 : 0
 
 # Define different modes for sending replies in response to received ARP requests that resolve local target IP addresses:
 #
@@ -92,7 +92,7 @@ default['sysctl']['params']['net']['ipv4']['conf']['all']['arp_ignore'] =
 # * **4-7** - reserved
 # * **8** - do not reply for all local addresses
 default['sysctl']['params']['net']['ipv4']['conf']['all']['arp_announce'] =
-    node['network']['arp']['restricted'] ? 2 : 0
+    node['os-hardening']['network']['arp']['restricted'] ? 2 : 0
 
 # RFC 1337 fix F1
 default['sysctl']['params']['net']['ipv4']['tcp_rfc1337'] = 1
@@ -149,7 +149,7 @@ default['sysctl']['params']['net']['ipv6']['conf']['default']['accept_ra'] = 0
 # This settings controls how the kernel behaves towards module changes at
 # runtime. Setting to 1 will disable module loading at runtime.
 # Setting it to 0 is actually never supported.
-unless node['security']['kernel']['enable_module_loading']
+unless node['os-hardening']['security']['kernel']['enable_module_loading']
   default['sysctl']['params']['kernel']['modules_disabled'] = 1
 end
 
@@ -170,12 +170,12 @@ end
 # * **128** - reboot/poweroff
 # * **256** - nicing of all RT tasks
 default['sysctl']['params']['kernel']['sysrq'] =
-  node['security']['kernel']['enable_sysrq'] ? node['security']['kernel']['secure_sysrq'] : 0
+  node['os-hardening']['security']['kernel']['enable_sysrq'] ? node['os-hardening']['security']['kernel']['secure_sysrq'] : 0
 
 # Prevent core dumps with SUID. These are usually only needed by developers and
 # may contain sensitive information.
 default['sysctl']['params']['fs']['suid_dumpable'] =
-  node['security']['kernel']['enable_core_dump'] ? 1 : 0
+  node['os-hardening']['security']['kernel']['enable_core_dump'] ? 1 : 0
 
 # ExecShield protection against buffer overflows
 # unless node['platform'] == "ubuntu" # ["nx"].include?(node['cpu'][0]['flags']) or

@@ -4,14 +4,14 @@
 #---
 
 # This file contains the names of kernel modules that should be loaded at boot time, one per line. Lines beginning with "#" are ignored.
-# 
+#
 # A list of all available kernel modules kann be found with `find /lib/modules/$(uname -r)/kernel/`
 # We will sort by folder.
 
 
 # Arch
 # ----
-# 
+#
 # Modules for certains builds, contains support modules and some CPU-specific optimizations.
 
 <% if @x86_64 == true %>
@@ -71,7 +71,7 @@ loop
 ext2
 btrfs
 
-<% if @node['desktop']['enable'] %>
+<% if @node['os-hardening']['desktop']['enable'] %>
 # Desktop
 psmouse
 snd
