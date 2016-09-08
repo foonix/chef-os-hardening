@@ -29,8 +29,8 @@ supports 'centos', '>= 5.0'
 supports 'redhat', '>= 5.0'
 supports 'oracle', '>= 6.4'
 
-depends 'sysctl', '>= 0.3.0'
-depends 'apt'
+depends 'sysctl', '<= 0.7.5'
+depends 'apt', '~> 3.0.0'
 depends 'yum'
 
 recipe 'os-hardening::default', 'harden the operating system (all recipes)'
@@ -42,3 +42,6 @@ recipe 'os-hardening::profile', 'harden settings in /etc/profile.d'
 recipe 'os-hardening::securetty', 'limit the allowed TTYs for root login'
 recipe 'os-hardening::suid_sgid', 'reduce SUID and SGID bits in the filesystem'
 recipe 'os-hardening::sysctl', 'set sane sysctl values'
+
+source_url 'https://github.com/dev-sec/chef-os-hardening'
+issues_url 'https://github.com/dev-sec/chef-os-hardening/issues'
