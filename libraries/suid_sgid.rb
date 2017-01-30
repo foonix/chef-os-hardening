@@ -40,7 +40,7 @@ class Chef
         Chef::Log.info "suid_sgid: findcmd #{findcmd}"
         find = Mixlib::ShellOut.new(findcmd)
         find.run_command
-        find.error!
+        #find.error!
         find.stdout.split("\n")
       end
 
