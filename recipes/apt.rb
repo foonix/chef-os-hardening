@@ -18,17 +18,13 @@
 # limitations under the License.
 #
 
-include_recipe 'apt'
-
 # apt-get and aptitude check package signatures by default.
 # TODO: could check apt.conf to make sure this hasn't been disabled.
 
 if node['os-hardening']['security']['packages']['clean']
-
   # remove packages and handle virtual packages correctly.
   # this is the same package list as used for the redhat distro family
   node['os-hardening']['security']['packages']['list'].each do |pkg|
-
     if !AptPackageExtras.virtual_package?(pkg)
       package pkg do
         action :purge
@@ -40,7 +36,5 @@ if node['os-hardening']['security']['packages']['clean']
         end
       end
     end
-
   end
-
 end

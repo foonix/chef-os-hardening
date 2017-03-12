@@ -15,20 +15,22 @@
 # limitations under the License.
 #
 
-require_relative '../spec_helper'
-
 describe 'os-hardening::securetty' do
-
-  let(:chef_run) do
+  cached(:chef_run) do
     ChefSpec::ServerRunner.new.converge(described_recipe)
   end
 
+  subject { chef_run }
+
   it 'creates /etc/securetty' do
-    expect(chef_run).to create_template('/etc/securetty').with(
+    is_expected.to create_template('/etc/securetty').with(
+      source: 'securetty.erb',
       user:   'root',
       group:  'root',
-      mode: '0400'
+      mode: '0400',
+      variables: {
+        ttys: "console\ntty1\ntty2\ntty3\ntty4\ntty5\ntty6"
+      }
     )
   end
-
 end

@@ -15,38 +15,39 @@
 # limitations under the License.
 #
 
-require_relative '../spec_helper'
-
 describe 'os-hardening::default' do
-
   # converge
-  let(:chef_run) do
+  cached(:chef_run) do
     ChefSpec::ServerRunner.new do |node|
       # sysctl/attributes/default.rb will set the config dir
       # on rhel and debian, but apply requires it for notification
       # therefore we set it manually here
-      node.set['sysctl']['conf_dir'] = '/etc/sysctl.d'
-      node.set['cpu']['0']['vendor_id'] = 'GenuineIntel'
-      node.set['env']['extra_user_paths'] = []
+      node.normal['sysctl']['conf_dir'] = '/etc/sysctl.d'
+      node.normal['cpu']['0']['vendor_id'] = 'GenuineIntel'
+      node.normal['env']['extra_user_paths'] = []
 
-      paths = %w(/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin) + node['env']['extra_user_paths']
+      paths = %w(
+        /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+      ) + node['env']['extra_user_paths']
       paths.each do |folder|
-        stub_command("find #{folder}  -perm -go+w -type f | wc -l | egrep '^0$'").and_return(false)
+        stub_command(
+          "find #{folder}  -perm -go+w -type f | wc -l | egrep '^0$'"
+        ).and_return(false)
       end
-
     end.converge(described_recipe)
   end
 
-  # check that the recipres are executed
-  it 'default should include os-hardening recipes by default' do
-    expect(chef_run).to include_recipe 'os-hardening::packages'
-    expect(chef_run).to include_recipe 'os-hardening::limits'
-    expect(chef_run).to include_recipe 'os-hardening::login_defs'
-    expect(chef_run).to include_recipe 'os-hardening::minimize_access'
-    expect(chef_run).to include_recipe 'os-hardening::pam'
-    expect(chef_run).to include_recipe 'os-hardening::profile'
-    expect(chef_run).to include_recipe 'os-hardening::securetty'
-    expect(chef_run).to include_recipe 'os-hardening::sysctl'
-  end
+  subject { chef_run }
 
+  # check that the recipes are executed
+  it 'default should include os-hardening recipes by default' do
+    is_expected.to include_recipe 'os-hardening::packages'
+    is_expected.to include_recipe 'os-hardening::limits'
+    is_expected.to include_recipe 'os-hardening::login_defs'
+    is_expected.to include_recipe 'os-hardening::minimize_access'
+    is_expected.to include_recipe 'os-hardening::pam'
+    is_expected.to include_recipe 'os-hardening::profile'
+    is_expected.to include_recipe 'os-hardening::securetty'
+    is_expected.to include_recipe 'os-hardening::sysctl'
+  end
 end

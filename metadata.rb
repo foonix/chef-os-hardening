@@ -1,4 +1,4 @@
-# encoding: utf-8
+# encoding: utf-8 # ~FC061
 #
 # Copyright 2014, Deutsche Telekom AG
 #
@@ -15,13 +15,13 @@
 # limitations under the License.
 #
 
-name             "os-hardening"
-maintainer       "Dominik Richter"
-maintainer_email "dominik.richter@googlemail.com"
-license          "Apache 2.0"
-description      "Installs and configures operating system hardening"
+name             'os-hardening'
+maintainer       'Dominik Richter'
+maintainer_email 'dominik.richter@googlemail.com'
+license          'Apache 2.0'
+description      'Installs and configures operating system hardening'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "2.0.0"
+version          '2.0.0'
 
 supports 'ubuntu', '>= 12.04'
 supports 'debian', '>= 6.0'
@@ -30,8 +30,7 @@ supports 'redhat', '>= 5.0'
 supports 'oracle', '>= 6.4'
 
 depends 'sysctl', '>= 0.7.5'
-depends 'apt', '~> 4.0.1'
-depends 'yum'
+depends 'compat_resource', '>= 12.16.3'
 
 recipe 'os-hardening::default', 'harden the operating system (all recipes)'
 recipe 'os-hardening::limits', 'prevent core dumps'
