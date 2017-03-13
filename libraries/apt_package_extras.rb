@@ -3,7 +3,7 @@
 # Cookbook Name:: os-hardening
 # Library:: apt_package_extras
 #
-# Copyright 2008, Opscode Inc.
+# Copyright 2008, Chef Software, Inc.
 # Copyright 2015, Hardening Framework Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ class Chef
         # The provider functionality isn't easily exposed for consumption in other recipes
 
         unless virtual_package?(package_name)
-          fail("#{package_name} is not a virtual package, cannot remove providing packages.")
+          raise "#{package_name} is not a virtual package, cannot remove providing packages."
         end
 
         showpkg = Mixlib::ShellOut.new("apt-cache showpkg '#{package_name}'")

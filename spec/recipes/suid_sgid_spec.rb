@@ -1,9 +1,5 @@
-# encoding: utf-8
+# encoding: UTF-8
 #
-# Cookbook Name:: os-hardening
-# Library:: cookbook_version
-#
-# Copyright 2014, Dominik Richter
 # Copyright 2014, Deutsche Telekom AG
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,16 +15,14 @@
 # limitations under the License.
 #
 
-class Chef
-  class Recipe
-    def cookbook_version(cookbook_name, version_contraint)
-      cb = run_context.cookbook_collection[cookbook_name]
-      if cb.nil?
-        raise "Can't find cookbook #{cookbook_name}! Can't determine its version."
-      end
+describe 'os-hardening::suid_sgid' do
+  cached(:chef_run) do
+    ChefSpec::ServerRunner.new.converge(described_recipe)
+  end
 
-      v = cb.metadata.version
-      Chef::VersionConstraint::Platform.new(version_contraint).include?(v)
-    end
+  subject { chef_run }
+
+  it 'run remove_suid_from_blacklists ruby_block' do
+    is_expected.to run_ruby_block('remove_suid_from_blacklists')
   end
 end

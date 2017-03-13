@@ -19,14 +19,14 @@
 # limitations under the License.
 
 # Define the packages based on operating system
-case platform_family
+case node['platform_family']
 when 'rhel', 'fedora'
   default['os-hardening']['packages']['pam_ccreds'] = 'pam_ccreds'
   default['os-hardening']['packages']['pam_passwdqc'] = 'pam_passwdqc'
   default['os-hardening']['packages']['pam_cracklib'] = 'pam_cracklib'
   default['os-hardening']['packages']['pam_pwquality'] = 'libpwquality'
 
-  if platform_version.to_f < 7
+  if node['platform_version'].to_f < 7
     default['os-hardening']['auth']['pam']['passwdqc']['enable']  = true
     default['os-hardening']['auth']['pam']['pwquality']['enable']  = false
   else
@@ -63,6 +63,7 @@ default['os-hardening']['env']['umask']                               = '027'
 default['os-hardening']['env']['root_path']                           = '/'
 default['os-hardening']['auth']['pw_max_age']                         = 60
 default['os-hardening']['auth']['pw_min_age']                         = 7 # discourage password cycling
+default['os-hardening']['auth']['pw_warn_age']                        = 7
 default['os-hardening']['auth']['retries']                            = 5
 default['os-hardening']['auth']['lockout_time']                       = 600 # 10min
 default['os-hardening']['auth']['timeout']                            = 60
